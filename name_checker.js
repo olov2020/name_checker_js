@@ -1,5 +1,9 @@
 function myFunction() {
-  var sheet = SpreadsheetApp.getActiveSheet();
+  var spreadSheetAURL = "https://docs.google.com/spreadsheets/d/1JERvnyS74Y7zR-lAoeggdPu6nWFHT3VXp1Obrj5F8mI/edit"; 
+  var sheetNameArray = [];
+
+  var spreadSheetsInA = SpreadsheetApp.openByUrl(spreadSheetAURL).getSheets();
+  var sheet = spreadSheetsInA[2];
 
   function DamerauLevenshtein(prices, damerau) {
   //'prices' customisation of the edit costs by passing an object with optional 'insert', 'remove', 'substitute', and
@@ -140,10 +144,13 @@ function myFunction() {
   return distance;
 }
 
-var checker_list = sheet.getSheetValues(1, 3, 834, 3);
+var checker_list = sheet.getSheetValues(1, 3, 2000, 3);
+for (i in checker_list) {
+  checker_list[i] = checker_list[i][0].replace(/\s{2,}/g, ' ').trim().split(' ');
+}
 // console.log(checker_list[0][0]);
 // console.log(checker_list[0]);
-var all_students = sheet.getSheetValues(1, 1, 354, 1);
+var all_students = sheet.getSheetValues(1, 1, 1000, 1);
 for (i in all_students) {
   all_students[i] = all_students[i][0].replace(/\s{2,}/g, ' ').trim().split(' ');
 }
@@ -160,11 +167,23 @@ var ans = [];
 
 for (i in all_students) {
   var min_value = 100;
+  if (all_students[i] == '') {
+    continue;
+  }
   for (j in checker_list) {
     var check_up = 0;
+    if (checker_list[j] == '') {
+      continue;
+    }
 
-    for (k in all_students[i]) {
+    var minimum = all_students[i];
+    if (checker_list[j].length < minimum.length) {
+      minimum = checker_list[j];
+    }
+    for (k in minimum) {
       var cnt = 0;
+      // console.log(all_students[i]);
+      // console.log(checker_list[j]);
       cnt = dl(all_students[i][k], checker_list[j][k]);
       check_up += cnt;
     }

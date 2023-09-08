@@ -200,9 +200,11 @@ for (i in all_students) {
   }
 }
 
+var range = SpreadsheetApp.getActive().getRange("автопроверка!B:B");
+  range.insertCheckboxes("Y", "N");
+
 for (i in ans) {
-  sheet.getRange(Number(ans[i]) + 1, 1).setBackground("green");
-  sheet.getRange(Number(ans[i]) + 1, 1).setFontColor('white');
+  sheet.getRange(Number(ans[i]) + 1, 2).check();
 }
 
 }
